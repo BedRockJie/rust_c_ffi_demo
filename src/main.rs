@@ -17,14 +17,25 @@ pub extern "C" fn rust_callback(number: c_int) {
     println!("[Rust] Received from C: {}", number);
 }
 
+unsafe extern "C" {
+    unsafe fn add_c(a: c_int, b: c_int) -> c_int;
+    unsafe fn display_string(str: *const u8);
+}
+
 fn main() {
     println!("[Rust] Main function started.");
     let number_to_send: i32 = 42;
 
+    let a = 10; let b = 20;
+
+    let rust_string = String::from("Hello from Rust to C!");
     // 调用 C 函数是不安全的，因为它绕过了 Rust 的安全保证
     // 例如，C 代码可能会访问空指针或无效内存
     unsafe {
         process_data_in_c(number_to_send, rust_callback);
+        let result = add_c(a, b);
+        display_string(rust_string.as_ptr());
+        println!("[Rust] Result from C: {}", result);
     }
     println!("[Rust] Back in main. Program finished.");
 }

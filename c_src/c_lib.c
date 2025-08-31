@@ -10,3 +10,11 @@ void process_data_in_c(int32_t number, rust_callback callback) {
 
     printf("[C] Rust callback finished. C function is done.\n");
 }
+
+int32_t add_c(int32_t a, int32_t b) {
+    return a + b;
+}
+
+void display_string(const char* str) {
+    printf("[C] Displaying string from Rust: %s\n", str);
+} 

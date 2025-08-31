@@ -10,5 +10,7 @@ typedef void (*rust_callback)(int32_t);
 // 声明 C 函数，供 Rust 调用
 // 它接收一个数字和一个回调函数指针
 void process_data_in_c(int32_t number, rust_callback callback);
+int32_t add_c(int32_t a, int32_t b);
+void display_string(const char* str);
 
 #endif // C_LIB_H
