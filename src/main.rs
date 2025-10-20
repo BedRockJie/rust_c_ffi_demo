@@ -1,4 +1,4 @@
-use std::os::raw::c_int;
+use std::{ffi::{c_double}, os::raw::c_int};
 
 // extern "C" 块用于声明外部 C 函数的签名
 // Rust 编译器会知道这些函数是在其他地方定义的，并在链接阶段找到它们
@@ -20,6 +20,7 @@ pub extern "C" fn rust_callback(number: c_int) {
 unsafe extern "C" {
     unsafe fn add_c(a: c_int, b: c_int) -> c_int;
     unsafe fn display_string(str: *const u8);
+    unsafe fn calculator_float(a: c_double, b: c_double) -> c_double;
 }
 
 fn main() {
@@ -27,6 +28,7 @@ fn main() {
     let number_to_send: i32 = 42;
 
     let a = 10; let b = 20;
+    let c = 10.3; let d = 20.3;
 
     let rust_string = String::from("Hello from Rust to C!");
     // 调用 C 函数是不安全的，因为它绕过了 Rust 的安全保证
@@ -34,8 +36,23 @@ fn main() {
     unsafe {
         process_data_in_c(number_to_send, rust_callback);
         let result = add_c(a, b);
+        let float_result = calculator_float(c, d);
         display_string(rust_string.as_ptr());
         println!("[Rust] Result from C: {}", result);
+        println!("[Rust] Result flot from C: {}", float_result);
     }
     println!("[Rust] Back in main. Program finished.");
+}
+
+// add test func
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_add_c() {
+        unsafe {
+            let result = add_c(5, 7);
+            assert_eq!(result, 12);
+        }
+    }
 }

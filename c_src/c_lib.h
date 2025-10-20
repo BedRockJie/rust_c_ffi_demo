@@ -12,5 +12,6 @@ typedef void (*rust_callback)(int32_t);
 void process_data_in_c(int32_t number, rust_callback callback);
 int32_t add_c(int32_t a, int32_t b);
 void display_string(const char* str);
+double calculator_float(double a, double b);
 
 #endif // C_LIB_H
